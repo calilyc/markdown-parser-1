@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class MarkdownParse {
 
-    public static ArrayList<String> getLinks(String markdown) {
+    public static ArrayList<String> getLinks(String markdown) throws IndexOutOfBoundsException {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then read link upto next )
         int currentIndex = 0;
@@ -16,8 +16,61 @@ public class MarkdownParse {
             int closeBracket = markdown.indexOf("]", openBracket);
             int openParen = markdown.indexOf("(", closeBracket);
             int closeParen = markdown.indexOf(")", openParen);
+            System.out.println("OpenBracket" +openBracket);
+            System.out.println("closebracket" + closeBracket);
+            System.out.println("openparen" + openParen);
+            System.out.println("closedparen" + closeParen);
+            System.out.println("-----------");
+
+            if (openBracket == -1 ||
+            closeBracket == -1 ||
+            openParen == -1 ||
+            closeParen == -1) {
+                break;
+            }
+
+            // checks if there's nothing in the brackets
+            if (openBracket == closeBracket -1) {
+                currentIndex = closeBracket + 1;
+                continue;
+            }
+
+            // checks for exclamation marks
+            if (openBracket > 1) {
+                if (markdown.charAt(openBracket-1) == '!') {
+                    currentIndex= openBracket + 2;
+                    System.out.println("Excla");
+                    continue;
+                }
+            }
+
+            if (openBracket == -1 ||
+            closeBracket == -1 ||
+            openParen == -1 ||
+            closeParen == -1) {
+                break;
+            }
+
+            // checks for exclamation marks
+            if (currentIndex != 0 && openBracket != -1) {
+                if (markdown.charAt(openBracket-1) == '!') {
+                    currentIndex= openBracket + 1;
+                    System.out.println("Excla");
+                    continue;
+                }
+            }
+            
+            // checks to see if close bracket is right before open paren
+            if (closeBracket != (openParen - 1)) {
+                System.out.println("Closeb");
+                currentIndex = openBracket + 1;
+                continue;
+            }
+            currentIndex = closeParen;
+            System.out.println(currentIndex);
             toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
+
+
         }
 
         return toReturn;
