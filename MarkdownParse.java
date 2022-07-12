@@ -22,6 +22,7 @@ public class MarkdownParse {
             System.out.println("closedparen" + closeParen);
             System.out.println("-----------");
 
+            // checks for incomplete link
             if (openBracket == -1 ||
             closeBracket == -1 ||
             openParen == -1 ||
@@ -44,12 +45,7 @@ public class MarkdownParse {
                 }
             }
 
-            if (openBracket == -1 ||
-            closeBracket == -1 ||
-            openParen == -1 ||
-            closeParen == -1) {
-                break;
-            }
+
 
             // checks for exclamation marks
             if (currentIndex != 0 && openBracket != -1) {
@@ -66,8 +62,8 @@ public class MarkdownParse {
                 currentIndex = openBracket + 1;
                 continue;
             }
+
             currentIndex = closeParen;
-            System.out.println(currentIndex);
             toReturn.add(markdown.substring(openParen + 1, closeParen));
 
 
